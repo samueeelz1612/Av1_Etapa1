@@ -3,276 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Candidatos - P Mauricio (94)</title>
+    <title>PMauricio (94) - Sistema de Registro de Candidatos</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            color: #333;
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
-        .container {
-            max-width: 900px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        h1 {
-            text-align: center;
-            color: #1a5276;
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .party-badge {
+            background-color: var(--accent);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
         }
 
         .card {
-            background: #ffffff;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-bottom: 16px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .candidate-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .candidate-card {
+            border: 1px solid var(--border);
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .candidate-card.assigned {
+            opacity: 0.6;
+            background-color: #f1f5f9;
+        }
+
+        .candidate-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-light);
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .candidate-info p {
+            font-size: 0.8rem;
+            color: #64748b;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        select, input[type="text"] {
+        select, input {
             width: 100%;
             padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .rules-hint {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 4px;
         }
 
         button {
-            background-color: #27ae60;
+            background-color: var(--primary);
             color: white;
-            padding: 10px 15px;
             border: none;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.2s;
         }
 
         button:hover {
-            background-color: #219150;
+            background-color: var(--primary-light);
         }
 
-        #btnFinalizar {
-            background-color: #2980b9;
-            margin-top: 15px;
+        button.btn-danger {
+            background-color: var(--danger);
+        }
+
+        button.btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        button.btn-success {
+            background-color: var(--success);
+            font-size: 1.05rem;
             width: 100%;
+            padding: 14px;
         }
 
-        #btnFinalizar:hover {
-            background-color: #1f618d;
+        button.btn-success:hover {
+            background-color: #059669;
         }
 
-        .error-msg {
-            color: #c0392b;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        table {
+        .chapa-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
 
-        th, td {
-            border: 1px solid #ddd;
+        .chapa-table th, .chapa-table td {
             padding: 10px;
-            text-align: center;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
         }
 
-        th {
-            background-color: #ebedef;
+        .chapa-table th {
+            background-color: #f1f5f9;
+            font-size: 0.85rem;
+            color: #475569;
         }
 
-        img.foto-candidato {
-            width: 50px;
-            height: 50px;
+        .chapa-table img {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
         }
 
-        .btn-remover {
-            background-color: #e74c3c;
-            padding: 5px 10px;
-            font-size: 12px;
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            display: none;
         }
 
-        .btn-remover:hover {
-            background-color: #c0392b;
+        .alert-error {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Sistema de Registro de Candidatos - P Mauricio (94)</h1>
-        
-        <section class="card">
-            <h2>Regras de Formatação dos Números:</h2>
-            <ul>
-                <li><strong>Presidente:</strong> 2 dígitos (Deve ser <code>94</code>) | Máximo: 1</li>
-                <li><strong>Governador(a):</strong> 2 dígitos (Deve ser <code>94</code>) | Máximo: 1</li>
-                <li><strong>Senador(a):</strong> 3 dígitos (Inicia com <code>94</code>) | Máximo: 2</li>
-                <li><strong>Deputado(a) Federal:</strong> 4 dígitos (Inicia com <code>94</code>) | Sem limite</li>
-                <li><strong>Deputado(a) Estadual:</strong> 5 dígitos (Inicia com <code>94</code>) | Sem limite</li>
-            </ul>
-        </section>
 
-        <section class="card">
-            <h2>Indicar / Registrar Candidato</h2>
-            <form id="formCandidato">
-                <div class="form-group">
-                    <label for="filiadoSelect">Filiado:</label>
-                    <select id="filiadoSelect" required>
-                        <option value="">Selecione um filiado...</option>
-                    </select>
+    <header>
+        <div>
+            <h1>Sistema de Registro de Candidatos</h1>
+            <p>AV1 Etapa 1 - Submissão de Chapa Oficial ao TSE</p>
+        </div>
+        <div class="party-badge">PMauricio (94)</div>
+    </header>
+
+    <div id="alertBox" class="alert"></div>
+
+    <div class="main-layout">
+        <!-- Esquerda: Filiados e Formulário de Indicação -->
+        <div>
+            <div class="card">
+                <h2>Indicar Candidato à Chapa</h2>
+                <form id="nominationForm">
+                    <div class="form-group">
+                        <label for="filiadoSelect">Filiado Disponível</label>
+                        <select id="filiadoSelect" required>
+                            <option value="">Selecione um filiado...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cargoSelect">Cargo Eletivo</label>
+                        <select id="cargoSelect" required>
+                            <option value="">Selecione o cargo...</option>
+                            <option value="Presidente">Presidente (Max: 1 | Digitos: 2)</option>
+                            <option value="Governador">Governador(a) (Max: 1 | Digitos: 3)</option>
+                            <option value="Senador">Senador(a) (Max: 2 | Digitos: 4)</option>
+                            <option value="Deputado Federal">Deputado(a) Federal (Livre | Digitos: 5)</option>
+                            <option value="Deputado Estadual">Deputado(a) Estadual (Livre | Digitos: 6)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numeroInput">Número do Candidato</label>
+                        <input type="text" id="numeroInput" placeholder="Ex: 94, 943, 9423..." required>
+                        <div class="rules-hint" id="numeroHint">Selecione o cargo para ver as regras de formato do número.</div>
+                    </div>
+
+                    <button type="submit">Adicionar à Chapa</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>
+                    Filiados PMauricio (94) 
+                    <span id="filiadosCount" style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(0)</span>
+                </h2>
+                <div class="candidate-list" id="filiadosList">
+                    <!-- Cards dos filiados inseridos dinamicamente -->
                 </div>
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <label for="cargoSelect">Cargo Eletivo:</label>
-                    <select id="cargoSelect" required>
-                        <option value="">Selecione o cargo...</option>
-                        <option value="Presidente">Presidente (1 vaga)</option>
-                        <option value="Governador">Governador(a) (1 vaga)</option>
-                        <option value="Senador">Senador(a) (2 vagas)</option>
-                        <option value="Deputado Federal">Deputado(a) Federal</option>
-                        <option value="Deputado Estadual">Deputado(a) Estadual</option>
-                    </select>
+        <!-- Direita: Chapa Formada e Finalização -->
+        <div>
+            <div class="card">
+                <h2>Chapa Oficial Confirmada</h2>
+                <div style="overflow-x: auto;">
+                    <table class="chapa-table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nome</th>
+                                <th>Cargo</th>
+                                <th>Número</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chapaTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #94a3b8;">Nenhum candidato indicado ainda.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="numeroInput">Número do Candidato:</label>
-                    <input type="text" id="numeroInput" placeholder="Ex: 94, 941, 9412..." required>
-                </div>
-
-                <button type="button" onclick="adicionarCandidato()">Adicionar à Chapa</button>
-            </form>
-            <div id="mensagemErro" class="error-msg"></div>
-        </section>
-
-        <section class="card">
-            <h2>Chapa Oficial Confirmada</h2>
-            <table id="tabelaChapa">
-                <thead>
-                    <tr>
-                        <th>Foto</th>
-                        <th>Nome</th>
-                        <th>Cargo</th>
-                        <th>Número</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="corpoTabela">
-                    <!-- Candidatos adicionados aparecem aqui -->
-                </tbody>
-            </table>
-            
-            <button id="btnFinalizar" onclick="finalizarEBaixarJSON()">Finalizar e Baixar PMauricio.json</button>
-        </section>
+            <div class="card">
+                <h2>Finalizar Registro</h2>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+                    Ao concluir a seleção e validação dos candidatos da chapa, faça o download do arquivo consolidado de dados JSON.
+                </p>
+                <button id="downloadBtn" class="btn-success">Download PMauricio.json</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const CODIGO_PARTIDO = "94";
-        const NOME_PARTIDO = "P Mauricio";
-
-        // Base de dados de filiados do P Mauricio (94)
-        const listaFiliados = [
-            { id: 1, nome: "Mônica Sousa", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Monica" },
-            { id: 2, nome: "Cebolinha Menezes", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Cebolinha" },
-            { id: 3, nome: "Cascão Silva", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Cascao" },
-            { id: 4, nome: "Magali Lima", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Magali" },
-            { id: 5, nome: "Chico Bento", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Chico+Bento" },
-            { id: 6, nome: "Franjinha Oliveira", partido: "P Mauricio", numeroPartido: 94, foto: "https://via.placeholder.com/150?text=Franjinha" }
+        // Dados dos Filiados do Partido PMauricio (94) - Turma da Mônica
+        const mockCandidatosJSON = [
+            { id: 101, nome: "Mônica", partido: "PMauricio", numeroPartido: 94, foto: "imagem monica.jpg" },
+            { id: 102, nome: "Cebolinha", partido: "PMauricio", numeroPartido: 94, foto: "imagem cebolinha.png" },
+            { id: 103, nome: "Cascão", partido: "PMauricio", numeroPartido: 94, foto: "imagem cascao.jpg" },
+            { id: 104, nome: "Magali", partido: "PMauricio", numeroPartido: 94, foto: "imagem magali.jpg" },
+            { id: 105, nome: "Chico Bento", partido: "PMauricio", numeroPartido: 94, foto: "imagem chico bento.jpg" },
+            { id: 106, nome: "Franjinha", partido: "PMauricio", numeroPartido: 94, foto: "franjinha png.png" },
+            { id: 107, nome: "Bidu", partido: "PMauricio", numeroPartido: 94, foto: "bidu png.png" },
+            // Filtro de segurança (outros partidos)
+            { id: 201, nome: "Iron Man", partido: "PMarvel", numeroPartido: 88, foto: "https://via.placeholder.com/150?text=IronMan" }
         ];
 
-        let chapaOficial = [];
-
-        // Regras de vagas e tamanho do número para cada cargo
-        const REGRAS_CARGOS = {
-            "Presidente": { limite: 1, digitos: 2 },
-            "Governador": { limite: 1, digitos: 2 },
-            "Senador": { limite: 2, digitos: 3 },
-            "Deputado Federal": { limite: Infinity, digitos: 4 },
-            "Deputado Estadual": { limite: Infinity, digitos: 5 }
+        // Regras por Cargo Eletivo para PMauricio (94)
+        const CARGO_RULES = {
+            "Presidente": { max: 1, digits: 2, prefix: "94" },
+            "Governador": { max: 1, digits: 3, prefix: "94" },
+            "Senador": { max: 2, digits: 4, prefix: "94" },
+            "Deputado Federal": { max: Infinity, digits: 5, prefix: "94" },
+            "Deputado Estadual": { max: Infinity, digits: 6, prefix: "94" }
         };
 
-        // Carregar filiados no <select> ao carregar a página
+        // Estado da Aplicação
+        let filiadosPMauricio = [];
+        let chapaOficial = [];
+
+        // Inicialização
         document.addEventListener("DOMContentLoaded", () => {
-            preencherSelectFiliados();
+            carregarEFiltrarDados();
+            setupEventListeners();
         });
 
-        function preencherSelectFiliados() {
-            const select = document.getElementById('filiadoSelect');
-            select.innerHTML = '<option value="">Selecione um filiado...</option>';
+        // Leitura, Carga dos Dados e Filtragem
+        function carregarEFiltrarDados() {
+            filiadosPMauricio = mockCandidatosJSON.filter(c => c.partido === "PMauricio" || c.numeroPartido === 94);
+            renderFiliados();
+            updateSelectOptions();
+        }
+
+        // Renderiza lista de filiados no painel visual
+        function renderFiliados() {
+            const listEl = document.getElementById("filiadosList");
+            const countEl = document.getElementById("filiadosCount");
             
-            listaFiliados.forEach(filiado => {
-                const option = document.createElement('option');
-                option.value = filiado.id;
-                option.textContent = filiado.nome;
-                select.appendChild(option);
+            listEl.innerHTML = "";
+            countEl.textContent = `(${filiadosPMauricio.length} cadastrados)`;
+
+            filiadosPMauricio.forEach(filiado => {
+                const isAssigned = chapaOficial.some(c => c.id === filiado.id);
+                const card = document.createElement("div");
+                card.className = `candidate-card ${isAssigned ? 'assigned' : ''}`;
+                card.innerHTML = `
+                    <img src="${filiado.foto}" alt="${filiado.nome}">
+                    <div class="candidate-info">
+                        <h4>${filiado.nome}</h4>
+                        <p>${isAssigned ? '✓ Já indicado' : 'Disponível'}</p>
+                    </div>
+                `;
+                listEl.appendChild(card);
             });
         }
 
-        // Adicionar e validar candidato na chapa
-        function adicionarCandidato() {
-            ocultarErro();
-            
-            const filiadoId = document.getElementById('filiadoSelect').value;
-            const cargo = document.getElementById('cargoSelect').value;
-            const numero = document.getElementById('numeroInput').value.trim();
+        // Atualiza a combo de seleção de filiados
+        function updateSelectOptions() {
+            const selectEl = document.getElementById("filiadoSelect");
+            selectEl.innerHTML = '<option value="">Selecione um filiado...</option>';
+
+            filiadosPMauricio.forEach(filiado => {
+                const isAssigned = chapaOficial.some(c => c.id === filiado.id);
+                if (!isAssigned) {
+                    const opt = document.createElement("option");
+                    opt.value = filiado.id;
+                    opt.textContent = filiado.nome;
+                    selectEl.appendChild(opt);
+                }
+            });
+        }
+
+        // Configuração de Eventos
+        function setupEventListeners() {
+            document.getElementById("cargoSelect").addEventListener("change", handleCargoChange);
+            document.getElementById("nominationForm").addEventListener("submit", handleAddCandidate);
+            document.getElementById("downloadBtn").addEventListener("click", handleDownload);
+        }
+
+        function handleCargoChange(e) {
+            const cargo = e.target.value;
+            const hintEl = document.getElementById("numeroHint");
+            if (cargo && CARGO_RULES[cargo]) {
+                const rule = CARGO_RULES[cargo];
+                hintEl.textContent = `Regra: Deve começar com '94' e ter exatamente ${rule.digits} dígitos.`;
+            } else {
+                hintEl.textContent = "Selecione o cargo para ver as regras de formato do número.";
+            }
+        }
+
+        // Seleção e Validação
+        function handleAddCandidate(e) {
+            e.preventDefault();
+            showAlert("", false);
+
+            const filiadoId = parseInt(document.getElementById("filiadoSelect").value);
+            const cargo = document.getElementById("cargoSelect").value;
+            const numero = document.getElementById("numeroInput").value.trim();
 
             if (!filiadoId || !cargo || !numero) {
-                mostrarErro("Preencha todos os campos do formulário.");
+                showAlert("Por favor, preencha todos os campos do formulário.", true);
                 return;
             }
 
-            const filiado = listaFiliados.find(f => f.id == filiadoId);
-
-            // Validação 1: Candidatura Única
-            const jaIndicado = chapaOficial.some(c => c.id === filiado.id);
+            // 1. Validação de Candidatura Única
+            const jaIndicado = chapaOficial.some(c => c.id === filiadoId);
             if (jaIndicado) {
-                mostrarErro(`O(a) filiado(a) ${filiado.nome} já foi indicado(a) para a chapa!`);
+                showAlert("Este filiado já foi indicado para outro cargo eletivo!", true);
                 return;
             }
 
-            // Validação 2: Limite de Vagas por Cargo
-            const regra = REGRAS_CARGOS[cargo];
-            const totalNoCargo = chapaOficial.filter(c => c.cargo === cargo).length;
-            if (totalNoCargo >= regra.limite) {
-                mostrarErro(`O cargo de ${cargo} já atingiu o limite de ${regra.limite} candidato(s).`);
+            // 2. Validação do Limite de Vagas
+            const rule = CARGO_RULES[cargo];
+            const indicadosParaCargo = chapaOficial.filter(c => c.cargo === cargo).length;
+            if (indicadosParaCargo >= rule.max) {
+                showAlert(`Limite de vagas atingido para o cargo de ${cargo} (Máximo: ${rule.max}).`, true);
                 return;
             }
 
-            // Validação 3: Formato do número do partido (deve começar com 94)
-            if (!numero.startsWith(CODIGO_PARTIDO)) {
-                mostrarErro(`O número do candidato deve começar obrigatoriamente com o número do partido (${CODIGO_PARTIDO}).`);
+            // 3. Validação do Número Eleitoral
+            const regexDigitos = new RegExp(`^94\\d{${rule.digits - 2}}$`);
+            if (rule.digits === 2 && numero !== "94") {
+                showAlert(`Para o cargo de ${cargo}, o número deve ser exatamente '94'.`, true);
+                return;
+            } else if (rule.digits > 2 && !regexDigitos.test(numero)) {
+                showAlert(`Número inválido para ${cargo}. Deve iniciar com 94 e conter exatamente ${rule.digits} dígitos (Ex: 94${"0".repeat(rule.digits - 2)}).`, true);
                 return;
             }
 
-            // Validação 4: Quantidade exata de dígitos por cargo
-            if (numero.length !== regra.digitos) {
-                mostrarErro(`Para o cargo de ${cargo}, o número deve conter exatamente ${regra.digitos} dígitos.`);
+            // 4. Validação de Número Duplicado na Chapa
+            const numeroExiste = chapaOficial.some(c => c.numero === numero);
+            if (numeroExiste) {
+                showAlert("Este número eleitoral já foi atribuído a outro candidato da chapa.", true);
                 return;
             }
 
-            // Validação 5: Número único na chapa
-            const numeroJaUsado = chapaOficial.some(c => c.numero === numero);
-            if (numeroJaUsado) {
-                mostrarErro(`O número ${numero} já está atribuído a outro candidato na chapa.`);
-                return;
-            }
-
-            // Adiciona candidato à chapa
+            // Atribuição com sucesso
+            const filiado = filiadosPMauricio.find(f => f.id === filiadoId);
             chapaOficial.push({
                 id: filiado.id,
                 nome: filiado.nome,
@@ -281,72 +492,85 @@
                 foto: filiado.foto
             });
 
-            atualizarTabelaChapa();
-            limparFormulario();
+            // Reset do formulário e atualizar views
+            document.getElementById("nominationForm").reset();
+            document.getElementById("numeroHint").textContent = "Selecione o cargo para ver as regras de formato do número.";
+            showAlert(`Candidato(a) ${filiado.nome} adicionado(a) com sucesso como ${cargo}!`, false);
+            
+            updateUI();
         }
 
-        function atualizarTabelaChapa() {
-            const tbody = document.getElementById('corpoTabela');
-            tbody.innerHTML = '';
+        function removeCandidate(id) {
+            chapaOficial = chapaOficial.filter(c => c.id !== id);
+            showAlert("Candidato removido da chapa.", false);
+            updateUI();
+        }
 
-            chapaOficial.forEach((candidato, index) => {
-                const tr = document.createElement('tr');
+        function updateUI() {
+            renderFiliados();
+            updateSelectOptions();
+            renderChapaTable();
+        }
+
+        function renderChapaTable() {
+            const tbody = document.getElementById("chapaTableBody");
+            if (chapaOficial.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #94a3b8;">Nenhum candidato indicado ainda.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = "";
+            chapaOficial.forEach(c => {
+                const tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td><img src="${candidato.foto}" alt="${candidato.nome}" class="foto-candidato"></td>
-                    <td>${candidato.nome}</td>
-                    <td>${candidato.cargo}</td>
-                    <td><strong>${candidato.numero}</strong></td>
-                    <td><button class="btn-remover" onclick="removerCandidato(${index})">Remover</button></td>
+                    <td><img src="${c.foto}" alt="${c.nome}"></td>
+                    <td><strong>${c.nome}</strong></td>
+                    <td>${c.cargo}</td>
+                    <td><code>${c.numero}</code></td>
+                    <td><button class="btn-danger" style="padding: 4px 8px; font-size: 0.8rem;" onclick="removeCandidate(${c.id})">Remover</button></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function removerCandidato(index) {
-            chapaOficial.splice(index, 1);
-            atualizarTabelaChapa();
-        }
-
-        function limparFormulario() {
-            document.getElementById('filiadoSelect').value = '';
-            document.getElementById('cargoSelect').value = '';
-            document.getElementById('numeroInput').value = '';
-        }
-
-        function mostrarErro(mensagem) {
-            document.getElementById('mensagemErro').textContent = mensagem;
-        }
-
-        function ocultarErro() {
-            document.getElementById('mensagemErro').textContent = '';
-        }
-
-        // Finalizar e disparar o download do arquivo PMauricio.json
-        function finalizarEBaixarJSON() {
+        // Geração e Download do Arquivo JSON (PMauricio.json)
+        function handleDownload() {
             if (chapaOficial.length === 0) {
-                mostrarErro("A chapa está vazia! Adicione pelo menos um candidato antes de finalizar.");
+                showAlert("Sua chapa está vazia. Adicione ao menos um candidato antes de gerar o arquivo final.", true);
                 return;
             }
 
-            // Formatação exigida: nome, numero, foto, cargo
-            const dadosFinais = chapaOficial.map(item => ({
-                nome: item.nome,
-                numero: item.numero,
-                foto: item.foto,
-                cargo: item.cargo
+            const dataToExport = chapaOficial.map(c => ({
+                nome: c.nome,
+                numero: c.numero,
+                foto: c.foto,
+                cargo: c.cargo
             }));
 
-            const jsonData = JSON.stringify(dadosFinais, null, 2);
-            const blob = new Blob([jsonData], { type: 'application/json' });
+            const jsonString = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
+
+            const a = document.createElement("a");
             a.href = url;
-            a.download = 'PMauricio.json';
+            a.download = "PMauricio.json";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+
+            showAlert("Download do arquivo PMauricio.json realizado com sucesso!", false);
+        }
+
+        function showAlert(msg, isError) {
+            const box = document.getElementById("alertBox");
+            if (!msg) {
+                box.style.display = "none";
+                return;
+            }
+            box.className = `alert ${isError ? 'alert-error' : 'alert-success'}`;
+            box.textContent = msg;
+            box.style.display = "block";
         }
     </script>
 </body>
